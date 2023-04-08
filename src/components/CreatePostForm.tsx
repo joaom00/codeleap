@@ -4,7 +4,10 @@ import { Spinner } from '@/components/Spinner'
 import { Textarea } from '@/components/Textarea'
 import { Label } from '@/components/Label'
 
-export const CreatPostForm = () => {
+type CreatPostFormProps = {
+  username: string
+}
+export const CreatPostForm = ({ username }: CreatPostFormProps) => {
   const postCreateMutation = useCreatePost()
   const [title, setTitle] = React.useState('')
   const [content, setContent] = React.useState('')
@@ -12,15 +15,13 @@ export const CreatPostForm = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
 
-    postCreateMutation.mutate(
-      { username: 'Vitor', title, content },
-      {
-        onSuccess: () => {
-          setTitle('')
-          setContent('')
-        },
+    const payload = { username, title, content }
+    postCreateMutation.mutate(payload, {
+      onSuccess: () => {
+        setTitle('')
+        setContent('')
       },
-    )
+    })
   }
 
   return (

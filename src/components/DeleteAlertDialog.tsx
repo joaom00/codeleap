@@ -26,7 +26,7 @@ export const DeleteDialog = ({ id, children }: DialogContentProps) => {
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed inset-0 bg-black/60 data-[state=open]:animate-overlayShow data-[state=closed]:animate-overlayHide" />
-        <AlertDialog.Content className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gray-1 rounded-lg p-6 max-w-[660px] w-full data-[state=open]:animate-contentShow data-[state=closed]:animate-contentHide">
+        <AlertDialog.Content className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gray-1 rounded-lg p-6 max-w-[660px] w-[90vw] data-[state=open]:animate-contentShow data-[state=closed]:animate-contentHide">
           <form onSubmit={handleSubmit}>
             <AlertDialog.Title className="text-xl font-semibold">
               Are you sure you want to delete this item?
