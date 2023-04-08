@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Posts } from '@/components/Posts'
 import { USERNAME_KEY_COOKIE } from '@/constants'
+import { Spinner } from '@/components/Spinner'
+import clsx from 'clsx'
 
 type HomeProps = {
   username?: string
