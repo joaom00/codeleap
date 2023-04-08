@@ -7,8 +7,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Posts } from '@/components/Posts'
 import { USERNAME_KEY_COOKIE } from '@/constants'
-import { Spinner } from '@/components/Spinner'
-import clsx from 'clsx'
 
 type HomeProps = {
   username?: string
@@ -57,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const queryClient = new QueryClient()
 
   let error = false
-  await queryClient.fetchQuery(['posts'], getPosts).catch(() => {
+  await queryClient.fetchInfiniteQuery(['posts'], getPosts).catch(() => {
     error = true
   })
 
@@ -66,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       props: {
         error,
         username,
-        dehydratedState: dehydrate(queryClient),
+        dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
       },
     }
   }
@@ -74,7 +72,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       error,
-      dehydratedState: dehydrate(queryClient),
+      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
     },
   }
 }

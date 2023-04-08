@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query'
 
 type PostsResponse = {
   count: number
@@ -13,21 +13,29 @@ type PostsResponse = {
   }[]
 }
 
-export async function getPosts(): Promise<PostsResponse> {
-  const response = await fetch('https://dev.codeleap.co.uk/careers/')
+type Context = QueryFunctionContext<string[], string>
+export async function getPosts(ctx: Context): Promise<PostsResponse> {
+  console.log('alou')
+  const next = ctx.pageParam
+  const url = next ?? 'https://dev.codeleap.co.uk/careers/'
+  const response = await fetch(url, { signal: ctx.signal })
   const data = await response.json()
   return data
 }
 
-export function usePosts<T = PostsResponse>(select?: (data: PostsResponse) => T) {
-  return useQuery({
+export function usePosts() {
+  return useInfiniteQuery({
     queryKey: ['posts'],
     queryFn: getPosts,
     staleTime: 1000 * 30, // 30 seconds
-    select,
+    getNextPageParam: (lastPage) => {
+      return lastPage.next ?? undefined
+    },
+    keepPreviousData: true,
   })
 }
 
 export function usePost(id: number) {
-  return usePosts((data) => data.results.find((post) => post.id === id))
+  return { data: { username: 'vitor', title: 'seila', content: 'seila' } }
+  // return usePosts((data) => data.results.find((post) => post.id === id))
 }
