@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDeletePost, usePost } from '@/queries/posts'
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
+import { Spinner } from './Spinner'
 
 type DialogContentProps = {
   id: number
@@ -44,8 +45,9 @@ export const DeleteDialog = ({ id, children }: DialogContentProps) => {
               <button
                 type="submit"
                 disabled={postDeleteMutation.isLoading}
-                className="h-9 px-8 rounded-lg bg-red-500 disabled:bg-gray-5 disabled:cursor-default text-white hover:bg-red-600 duration-150"
+                className="h-9 px-8 rounded-lg bg-red-500 disabled:bg-gray-5 disabled:cursor-default text-white hover:bg-red-600 duration-150 flex items-center gap-2"
               >
+                {postDeleteMutation.isLoading && <Spinner className="text-white" />}
                 Delete
               </button>
             </div>

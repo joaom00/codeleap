@@ -5,8 +5,14 @@ import { clsx } from 'clsx'
 type TextareaElement = React.ElementRef<typeof TextareaAutosize>
 type TextareaProps = React.ComponentPropsWithoutRef<typeof TextareaAutosize>
 
+const submitEvent = new Event('submit', {
+  cancelable: true,
+  bubbles: true,
+})
+
 export const Textarea = React.forwardRef<TextareaElement, TextareaProps>((props, forwardedRef) => {
   const { minRows = 3, maxRows = 12, className, ...textAreaProps } = props
+
   return (
     <TextareaAutosize
       minRows={minRows}
@@ -17,6 +23,15 @@ export const Textarea = React.forwardRef<TextareaElement, TextareaProps>((props,
       )}
       {...textAreaProps}
       ref={forwardedRef}
+      onKeyDown={(event) => {
+        props.onKeyDown?.(event)
+
+        if (['Enter'].includes(event.key) && event.ctrlKey) {
+          const textarea = event.currentTarget
+          const form = textarea.form
+          if (form) form.dispatchEvent(submitEvent)
+        }
+      }}
     />
   )
 })

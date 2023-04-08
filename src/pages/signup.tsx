@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { Label } from '@/components/Label'
 import { GetServerSideProps } from 'next'
 import nookies, { setCookie } from 'nookies'
+import { USERNAME_KEY_COOKIE } from '@/constants'
 
 export default function SignUp() {
   const [name, setName] = React.useState('')
@@ -11,7 +12,7 @@ export default function SignUp() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
 
-    setCookie(null, '@codeleap:name', name, {
+    setCookie(null, USERNAME_KEY_COOKIE, name.trim(), {
       maxAge: 24 * 60 * 60,
     })
 
@@ -36,7 +37,7 @@ export default function SignUp() {
 
           <button
             type="submit"
-            disabled={!name}
+            disabled={!name.trim()}
             className="flex items-center ml-auto h-10 rounded-lg px-8 uppercase mt-4 bg-primary text-white font-semibold cursor-pointer disabled:bg-gray-5 disabled:cursor-default"
           >
             Enter
@@ -49,7 +50,7 @@ export default function SignUp() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = nookies.get(ctx)
-  const username = cookies['@codeleap:name']
+  const username = cookies[USERNAME_KEY_COOKIE]
 
   if (username) {
     return {

@@ -1,7 +1,12 @@
-export const Spinner = () => {
+import clsx from 'clsx'
+
+type SpinnerProps = {
+  className?: string
+}
+export const Spinner = (props: SpinnerProps) => {
   return (
     <svg
-      className="text-primary h-3.5 w-3.5 animate-spin"
+      className={clsx('text-primary h-3.5 w-3.5 animate-spin', props.className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

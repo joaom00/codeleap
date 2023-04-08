@@ -3,11 +3,13 @@ import { useCreatePost } from '@/queries/posts'
 import { Spinner } from '@/components/Spinner'
 import { Textarea } from '@/components/Textarea'
 import { Label } from '@/components/Label'
+import { useToast } from './Toast'
 
 type CreatPostFormProps = {
   username: string
 }
 export const CreatPostForm = ({ username }: CreatPostFormProps) => {
+  const toast = useToast()
   const postCreateMutation = useCreatePost()
   const [title, setTitle] = React.useState('')
   const [content, setContent] = React.useState('')
@@ -15,11 +17,19 @@ export const CreatPostForm = ({ username }: CreatPostFormProps) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
 
-    const payload = { username, title, content }
+    const payload = { username, title: title.trim(), content: content.trim() }
     postCreateMutation.mutate(payload, {
       onSuccess: () => {
         setTitle('')
         setContent('')
+        toast.success({
+          title: 'Post created successfully!',
+        })
+      },
+      onError: () => {
+        toast.error({
+          title: 'Something went wrong',
+        })
       },
     })
   }
@@ -53,7 +63,7 @@ export const CreatPostForm = ({ username }: CreatPostFormProps) => {
 
       <button
         type="submit"
-        disabled={postCreateMutation.isLoading || !title || !content}
+        disabled={postCreateMutation.isLoading || !title.trim() || !content.trim()}
         className="flex ml-auto items-center gap-2 h-10 px-9 rounded-lg bg-primary mt-6 text-white cursor-pointer disabled:bg-gray-5 disabled:cursor-default"
       >
         {postCreateMutation.isLoading && <Spinner />}

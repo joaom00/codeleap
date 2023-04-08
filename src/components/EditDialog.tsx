@@ -4,6 +4,7 @@ import { usePost, useUpdatePost } from '@/queries/posts'
 import { Spinner } from '@/components/Spinner'
 import { Textarea } from '@/components/Textarea'
 import { Label } from '@/components/Label'
+import { useToast } from './Toast'
 
 type DialogProps = {
   id: number
@@ -32,6 +33,7 @@ type ContentProps = {
   onSuccess: () => void
 }
 const Content = ({ id, onSuccess }: ContentProps) => {
+  const toast = useToast()
   const post = usePost(id)
   const updatePostMutation = useUpdatePost()
 
@@ -41,10 +43,18 @@ const Content = ({ id, onSuccess }: ContentProps) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
 
-    const payload = { id, title, content }
+    const payload = { id, title: title.trim(), content: content.trim() }
     updatePostMutation.mutate(payload, {
       onSuccess: () => {
+        toast.success({
+          title: 'Post has been updated successfully!',
+        })
         onSuccess()
+      },
+      onError: () => {
+        toast.error({
+          title: 'Something went wrong',
+        })
       },
     })
   }
@@ -52,7 +62,7 @@ const Content = ({ id, onSuccess }: ContentProps) => {
   const disableSave = React.useMemo(
     () =>
       JSON.stringify({ title: post.data?.title, content: post.data?.content }) ===
-      JSON.stringify({ title, content }),
+      JSON.stringify({ title: title.trim(), content: content.trim() }),
     [post.data?.title, post.data?.content, title, content],
   )
   return (
