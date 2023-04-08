@@ -84,9 +84,11 @@ const PostsImpl = (props: PostsImplProps) => {
                 </div>
               </div>
               <div className="p-6 flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <p className="text-lg font-bold text-gray-11">@{post.username}</p>
-                  <p className="text-lg text-gray-11">
+                <div className="flex flex-wrap items-center justify-between">
+                  <p className="text-lg font-bold text-gray-11 line-clamp-1 max-w-[75%]">
+                    @{post.username}
+                  </p>
+                  <p className="text-lg text-gray-11 whitespace-nowrap">
                     {formatDistanceToNow(new Date(post.created_datetime), { addSuffix: true })}
                   </p>
                 </div>
