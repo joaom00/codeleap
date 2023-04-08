@@ -10,14 +10,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', ...fontFamily.sans],
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        sans: ['Roboto', ...fontFamily.sans],
       },
       colors: {
-        primary: '#7695EC',
+        primary: {
+          DEFAULT: 'hsl(224 76% 69% / <alpha-value>)',
+          400: 'hsl(224 76% 75% / <alpha-value>)',
+          500: 'hsl(224 76% 69% / <alpha-value>)',
+        },
         gray: {
           1: 'hsl(var(--gray1) / <alpha-value>)',
           2: 'hsl(var(--gray2) / <alpha-value>)',
@@ -38,14 +38,24 @@ module.exports = {
           from: { opacity: 0 },
           to: { opacity: 1 },
         },
+        overlayHide: {
+          from: { opacity: 1 },
+          to: { opacity: 0 },
+        },
         contentShow: {
           from: { opacity: 0, transform: 'translate(-50%, -48%) scale(0.96)' },
           to: { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
         },
+        contentHide: {
+          from: { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
+          to: { opacity: 0, transform: 'translate(-50%, -48%) scale(0.96)' },
+        },
       },
       animation: {
         overlayShow: 'overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        overlayHide: 'overlayHide 150ms cubic-bezier(0.16, 1, 0.3, 1)',
         contentShow: 'contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        contentHide: 'contentHide 150ms cubic-bezier(0.16, 1, 0.3, 1)',
       },
     },
   },

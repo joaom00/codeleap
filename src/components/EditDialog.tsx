@@ -1,7 +1,9 @@
 import React from 'react'
-import { usePost, useUpdatePost } from '@/queries/posts'
 import * as Dialog from '@radix-ui/react-dialog'
-import { Spinner } from './Spinner'
+import { usePost, useUpdatePost } from '@/queries/posts'
+import { Spinner } from '@/components/Spinner'
+import { Textarea } from '@/components/Textarea'
+import { Label } from '@/components/Label'
 
 type DialogProps = {
   id: number
@@ -13,9 +15,9 @@ export const EditDialog = ({ id, children }: DialogProps) => {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/60 data-[state=open]:animate-overlayShow" />
+        <Dialog.Overlay className="fixed inset-0 bg-black/60 data-[state=open]:animate-overlayShow data-[state=closed]:animate-overlayHide" />
 
-        <Dialog.Content className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gray-1 rounded-lg p-6 max-w-[660px] w-[95vw] data-[state=open]:animate-contentShow">
+        <Dialog.Content className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gray-1 rounded-lg p-6 max-w-[660px] w-[95vw] data-[state=open]:animate-contentShow data-[state=closed]:animate-contentHide">
           <Dialog.Title className="text-xl font-semibold">Edit item</Dialog.Title>
 
           <Content id={id} onSuccess={() => setOpen(false)} />
@@ -56,32 +58,35 @@ const Content = ({ id, onSuccess }: ContentProps) => {
   return (
     <form className="flex flex-col gap-6 mt-6" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-2">
-        <label htmlFor="title">Title</label>
+        <Label htmlFor="title">Title</Label>
         <input
           id="title"
           name="title"
-          className="h-10 border border-gray-7 text-sm rounded-lg px-2"
+          className="h-10 border border-gray-7 text-sm rounded-lg p-2"
           value={title}
           onChange={(event) => setTitle(event.currentTarget.value)}
         />
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="content">Content</label>
-        <textarea
+        <Label htmlFor="content">Content</Label>
+        <Textarea
           id="content"
-          className="h-10 border border-gray-7 text-sm rounded-lg px-2"
+          name="content"
           value={content}
           onChange={(event) => setContent(event.currentTarget.value)}
         />
       </div>
       <div className="flex justify-end items-center gap-4">
-        <Dialog.Close type="button" className="h-9 px-8 border border-gray-7 rounded-lg">
+        <Dialog.Close
+          type="button"
+          className="h-9 px-8 border border-gray-7 rounded-lg hover:bg-gray-3 duration-150"
+        >
           Cancel
         </Dialog.Close>
         <button
           type="submit"
           disabled={updatePostMutation.isLoading || disableSave}
-          className="h-9 px-8 rounded-lg bg-green-500 flex items-center gap-2 disabled:cursor-default disabled:bg-gray-5"
+          className="h-9 px-8 rounded-lg bg-green-500 flex items-center gap-2 disabled:cursor-default disabled:bg-gray-5 hover:bg-green-600 duration-150 text-white"
         >
           {updatePostMutation.isLoading && <Spinner />}
           Save

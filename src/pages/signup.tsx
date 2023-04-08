@@ -1,5 +1,6 @@
-import { useRouter } from 'next/router'
 import React from 'react'
+import { useRouter } from 'next/router'
+import { Label } from '@/components/Label'
 
 export default function SignUp() {
   const [value, setValue] = React.useState('')
@@ -16,7 +17,7 @@ export default function SignUp() {
         <h1 className="text-[1.375rem] font-bold mb-6">Welcome to CodeLeap Network</h1>
 
         <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Please enter your username</label>
+          <Label htmlFor="name">Please enter your username</Label>
           <input
             id="name"
             name="name"

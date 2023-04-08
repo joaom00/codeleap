@@ -5,6 +5,7 @@ import { usePosts } from '@/queries/posts'
 import { CreatPostForm } from '@/components/CreatePostForm'
 import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { getPosts } from '@/queries/posts/list'
+import { formatDistanceToNow } from 'date-fns'
 
 export default function Home() {
   const postsQuery = usePosts()
@@ -25,12 +26,18 @@ export default function Home() {
                 <h3 className="text-xl font-semibold">{post.title}</h3>
                 <div className="flex items-center gap-6">
                   <DeleteDialog id={post.id}>
-                    <button aria-label={`Delete ${post.title} post`}>
+                    <button
+                      aria-label={`Delete ${post.title} post`}
+                      className="hover:bg-primary-400 w-8 h-8 flex items-center justify-center rounded-md duration-150"
+                    >
                       <TrashIcon aria-hidden width={24} height={24} />
                     </button>
                   </DeleteDialog>
                   <EditDialog id={post.id}>
-                    <button aria-label={`Edit ${post.title} post`}>
+                    <button
+                      aria-label={`Edit ${post.title} post`}
+                      className="hover:bg-primary-400 w-8 h-8 flex items-center justify-center rounded-md duration-150"
+                    >
                       <Pencil2Icon aria-hidden width={24} height={24} />
                     </button>
                   </EditDialog>
@@ -39,9 +46,11 @@ export default function Home() {
               <div className="p-6 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <p className="text-lg font-bold text-gray-11">@{post.username}</p>
-                  <p className="text-lg text-gray-11">{post.created_datetime}</p>
+                  <p className="text-lg text-gray-11">
+                    {formatDistanceToNow(new Date(post.created_datetime), { addSuffix: true })}
+                  </p>
                 </div>
-                <p>{post.content}</p>
+                <p className="whitespace-pre-wrap text-lg">{post.content}</p>
               </div>
             </li>
           ))}

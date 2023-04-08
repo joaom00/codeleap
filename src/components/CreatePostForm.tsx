@@ -1,6 +1,8 @@
-import { useCreatePost } from '@/queries/posts'
 import React from 'react'
-import { Spinner } from './Spinner'
+import { useCreatePost } from '@/queries/posts'
+import { Spinner } from '@/components/Spinner'
+import { Textarea } from '@/components/Textarea'
+import { Label } from '@/components/Label'
 
 export const CreatPostForm = () => {
   const postCreateMutation = useCreatePost()
@@ -23,24 +25,25 @@ export const CreatPostForm = () => {
 
   return (
     <form className="border border-gray-6 p-6 rounded-lg" onSubmit={handleSubmit}>
-      <h2 className="text-xl font-semibold">What&apos;s on your mind?</h2>
+      <h2 className="text-xl font-bold">What&apos;s on your mind?</h2>
 
       <div className="flex flex-col gap-6 mt-6">
-        <div className="flex flex-col">
-          <label htmlFor="title">Title</label>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="title">Title</Label>
           <input
             id="title"
-            className="h-10 rounded-lg border border-gray-7 mt-2 px-2"
+            placeholder="Hello world"
+            className="h-10 rounded-lg border border-gray-7 p-2 placeholder:text-gray-11 text-sm"
             value={title}
             onChange={(event) => setTitle(event.currentTarget.value)}
           />
         </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="content">Content</label>
-          <textarea
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="content">Content</Label>
+          <Textarea
             id="content"
-            className="h-10 rounded-lg border border-gray-7 mt-2 px-2"
+            placeholder="Content here"
             value={content}
             onChange={(event) => setContent(event.currentTarget.value)}
           />
