@@ -44,7 +44,7 @@ export default function Home(props: HomeProps) {
           )}
         </div>
       </header>
-      <div className="bg-white border border-gray-6 p-6">
+      <div className="bg-white border border-gray-6 p-6 pt-11">
         {props.username && <CreatPostForm username={props.username} />}
         <Posts username={props.username} error={props.error} />
       </div>

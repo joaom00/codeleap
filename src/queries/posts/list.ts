@@ -35,7 +35,6 @@ export function usePosts() {
     getNextPageParam: (lastPage) => {
       return lastPage.next ?? undefined
     },
-    keepPreviousData: true,
   })
 }
 
