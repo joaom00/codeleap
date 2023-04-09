@@ -6,6 +6,7 @@ import { EditDialog } from '@/components/EditDialog'
 import { Spinner } from './Spinner'
 import clsx from 'clsx'
 import { useScrollToBottomAction } from '@/hooks/use-scroll-to-bottom-action'
+import { Tooltip } from './Tooltip'
 
 type PostsProps = {
   username?: string
@@ -64,20 +65,24 @@ const PostsImpl = (props: PostsImplProps) => {
                   {props.username === post.username && (
                     <>
                       <DeleteDialog id={post.id}>
-                        <button
-                          aria-label={`Delete ${post.title} post`}
-                          className="hover:bg-primary-400 w-8 h-8 flex items-center justify-center rounded-md duration-150"
-                        >
-                          <TrashIcon aria-hidden width={24} height={24} />
-                        </button>
+                        <Tooltip content="Delete">
+                          <button
+                            aria-label={`Delete ${post.title} post`}
+                            className="hover:bg-primary-400 w-8 h-8 flex items-center justify-center rounded-md duration-150"
+                          >
+                            <TrashIcon aria-hidden width={24} height={24} />
+                          </button>
+                        </Tooltip>
                       </DeleteDialog>
                       <EditDialog id={post.id}>
-                        <button
-                          aria-label={`Edit ${post.title} post`}
-                          className="hover:bg-primary-400 w-8 h-8 flex items-center justify-center rounded-md duration-150"
-                        >
-                          <Pencil2Icon aria-hidden width={24} height={24} />
-                        </button>
+                        <Tooltip content="Edit">
+                          <button
+                            aria-label={`Edit ${post.title} post`}
+                            className="hover:bg-primary-400 w-8 h-8 flex items-center justify-center rounded-md duration-150"
+                          >
+                            <Pencil2Icon aria-hidden width={24} height={24} />
+                          </button>
+                        </Tooltip>
                       </EditDialog>
                     </>
                   )}
