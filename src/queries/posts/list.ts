@@ -1,4 +1,9 @@
-import { QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query'
+import {
+  InfiniteData,
+  QueryFunctionContext,
+  useInfiniteQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 type PostsResponse = {
   count: number
@@ -15,7 +20,6 @@ type PostsResponse = {
 
 type Context = QueryFunctionContext<string[], string>
 export async function getPosts(ctx: Context): Promise<PostsResponse> {
-  console.log('alou')
   const next = ctx.pageParam
   const url = next ?? 'https://dev.codeleap.co.uk/careers/'
   const response = await fetch(url, { signal: ctx.signal })
@@ -36,6 +40,8 @@ export function usePosts() {
 }
 
 export function usePost(id: number) {
-  return { data: { username: 'vitor', title: 'seila', content: 'seila' } }
-  // return usePosts((data) => data.results.find((post) => post.id === id))
+  const queryClient = useQueryClient()
+
+  const posts = queryClient.getQueryData<InfiniteData<PostsResponse>>(['posts'])
+  return posts?.pages.map((page) => page.results.find((post) => post.id === id))[0]
 }

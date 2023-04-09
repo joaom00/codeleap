@@ -7,7 +7,7 @@ type Payload = {
 }
 
 async function updatePost({ id, ...payload }: Payload) {
-  const response = await fetch(`https://dev.codeleap.co.uk/careers/${id}`, {
+  const response = await fetch(`https://dev.codeleap.co.uk/careers/${id}/`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

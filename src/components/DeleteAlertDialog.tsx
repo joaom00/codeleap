@@ -2,23 +2,31 @@ import React from 'react'
 import { useDeletePost, usePost } from '@/queries/posts'
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import { Spinner } from './Spinner'
+import { useToast } from './Toast'
 
 type DialogContentProps = {
   id: number
   children: React.ReactNode
 }
 export const DeleteDialog = ({ id, children }: DialogContentProps) => {
+  const toast = useToast()
   const post = usePost(id)
-  const postDeleteMutation = useDeletePost()
+  const deletePostMutation = useDeletePost()
 
   const [open, setOpen] = React.useState(false)
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
 
-    postDeleteMutation.mutate(id, {
+    deletePostMutation.mutate(id, {
       onSuccess: () => {
         setOpen(true)
+        toast.success({ title: 'Post has been successfully deleted!' })
+      },
+      onError: () => {
+        toast.error({
+          title: 'Something went wrong when trying to delete',
+        })
       },
     })
   }
@@ -33,7 +41,7 @@ export const DeleteDialog = ({ id, children }: DialogContentProps) => {
               Are you sure you want to delete this item?
             </AlertDialog.Title>
             <p className="text-center text-lg my-10">
-              <em>{post.data?.title}</em>
+              <em>{post?.title}</em>
             </p>
             <div className="flex justify-end gap-4">
               <AlertDialog.Cancel
@@ -44,10 +52,10 @@ export const DeleteDialog = ({ id, children }: DialogContentProps) => {
               </AlertDialog.Cancel>
               <button
                 type="submit"
-                disabled={postDeleteMutation.isLoading}
+                disabled={deletePostMutation.isLoading}
                 className="h-9 px-8 rounded-lg bg-red-500 disabled:bg-gray-5 disabled:cursor-default text-white hover:bg-red-600 duration-150 flex items-center gap-2"
               >
-                {postDeleteMutation.isLoading && <Spinner className="text-white" />}
+                {deletePostMutation.isLoading && <Spinner className="text-white" />}
                 Delete
               </button>
             </div>

@@ -37,8 +37,8 @@ const Content = ({ id, onSuccess }: ContentProps) => {
   const post = usePost(id)
   const updatePostMutation = useUpdatePost()
 
-  const [title, setTitle] = React.useState(post.data?.title ?? '')
-  const [content, setContent] = React.useState(post.data?.content ?? '')
+  const [title, setTitle] = React.useState(post?.title ?? '')
+  const [content, setContent] = React.useState(post?.content ?? '')
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
@@ -47,13 +47,13 @@ const Content = ({ id, onSuccess }: ContentProps) => {
     updatePostMutation.mutate(payload, {
       onSuccess: () => {
         toast.success({
-          title: 'Post has been updated successfully!',
+          title: 'Post has been successfully updated!',
         })
         onSuccess()
       },
       onError: () => {
         toast.error({
-          title: 'Something went wrong',
+          title: 'Something went wrong when trying to update',
         })
       },
     })
@@ -61,9 +61,9 @@ const Content = ({ id, onSuccess }: ContentProps) => {
 
   const disableSave = React.useMemo(
     () =>
-      JSON.stringify({ title: post.data?.title, content: post.data?.content }) ===
+      JSON.stringify({ title: post?.title, content: post?.content }) ===
       JSON.stringify({ title: title.trim(), content: content.trim() }),
-    [post.data?.title, post.data?.content, title, content],
+    [post?.title, post?.content, title, content],
   )
   return (
     <form className="flex flex-col gap-6 mt-6" onSubmit={handleSubmit}>
